@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>" />
+  <meta name="description" content="AnimeVault — Descubra o universo anime premium. Milhares de títulos em Full HD e 4K, conteúdo legendado e dublado. Faça o quiz personalizado e receba sua recomendação exclusiva." />
+  <meta name="theme-color" content="#000000" />
+  <meta property="og:title" content="Quiz Personalizado — Desenho" />
+  <meta property="og:description" content="Descubra sua recomendação personalizada." />
+  <meta property="og:type" content="website" />
+  
+  <title>Quiz Personalizado — Desenho</title>
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="style.css" />
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'neon-red': '#ff1a1a',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-premium min-h-[100dvh] overflow-x-hidden text-white">
+
+  <!-- Background decorations (glows) -->
+  <div class="pointer-events-none absolute inset-0 overflow-hidden z-0">
+    <div class="absolute left-1/2 top-0 h-96 w-96 -translate-x-1/2 rounded-full bg-red-900/20 blur-[100px]"></div>
+    <div class="absolute bottom-0 right-0 h-64 w-64 rounded-full bg-red-800/15 blur-[100px]"></div>
+  </div>
+
+  <!-- Progress Bar Header -->
+  <div id="progress-bar-container" class="fixed left-0 right-0 top-0 z-50 bg-black/60 px-3 pb-2 pt-[max(0.75rem,env(safe-area-inset-top))] backdrop-blur-sm sm:px-4 sm:pt-4">
+    <div class="mx-auto max-w-lg">
+      <div class="h-1 overflow-hidden rounded-full bg-white/10 sm:h-1.5">
+        <div id="progress-bar-fill" class="h-full rounded-full bg-gradient-to-r from-red-900 via-neon-red to-neon-glow transition-[width] duration-500 ease-out shadow-neon-mobile" style="width: 0%;"></div>
+      </div>
+      <p id="progress-text" class="mt-1 text-right text-[10px] text-white/40 sm:text-xs">0%</p>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="relative z-10 mx-auto flex min-h-[100dvh] max-w-lg items-start justify-center px-3 pb-[max(5rem,env(safe-area-inset-bottom))] pt-[calc(3.5rem+env(safe-area-inset-top))] sm:items-center sm:px-4 sm:pb-8 sm:pt-20">
+    
+    <div id="funnel-container" class="w-full animate-fade-in">
+      <!-- Content is dynamically rendered here -->
+    </div>
+
+  </main>
+
+  <!-- Facebook Pixel Integration -->
+  <script>
+    // Configuração do Pixel (Substitua com seu ID se desejar)
+    const PIXEL_ID = "2255147291969218";
+    
+    // Inicialização do Pixel do Facebook
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    
+    fbq('init', PIXEL_ID);
+    fbq('track', 'PageView');
+  </script>
+
+  <!-- Quiz logic script -->
+  <script>
+    // Configurações do Funil de Desenho
+    const CONFIG = {
+      variant: "desenho",
+      checkoutUrl: "https://go.hotmart.com/Y106168625Q?ap=ea69",
+      compatibilityScore: 98,
+      resultPrice: "R$29,97",
+      resultPriceOriginal: "R$49,97",
+      questions: [
+        {
+          id: 1,
+          title: "Qual tipo de conteúdo você mais gosta?",
+          options: ["Sem censura", "Conteúdo legendado", "Conteúdo dublado", "Ambos"],
+          cover: "https://www.playflixpro.online/covers/desenho/q01.webp",
+          fallbackCover: "https://cdn.hentaigifz.com/1815/sexyhentaiscenes015001.gif"
+        },
+        {
+          id: 2,
+          title: "Qual desenho você gostaria de ver?",
+          options: ["Os Jovens Titãs", "Ben 10", "Scooby-Doo", "Todos os três"],
+          cover: "https://www.playflixpro.online/covers/desenho/q02.webp",
+          fallbackCover: "https://gif.acgnngca.com/o/20230411/s2h4mowupnr.gif"
+        },
+        {
+          id: 3,
+          title: "Você prefere assistir conteúdo em:",
+          options: ["Full HD", "4K", "Tanto faz"],
+          cover: "https://www.playflixpro.online/covers/desenho/q03.webp",
+          fallbackCover: "https://cartoon.hentaox.com/wp-content/uploads/2021/04/turanga-Leela-transano-com-zapp-brannigan-futurama-hentai.gif"
+        },
+        {
+          id: 4,
+          title: "O que mais te interessa em um conteúdo exclusivo?",
+          options: ["Fotos raras", "Vídeos sem censura", "Atualizações diárias", "Tudo isso"],
+          cover: "https://www.playflixpro.online/covers/desenho/q04.webp",
+          fallbackCover: "https://img1.thatpervert.com/pics/post/Raven-%28DC%29-teen-titans-DC-Comics-fandoms-8777609.gif"
+        },
+        {
+          id: 5,
+          title: "Você gostaria de receber novos conteúdos todos os dias?",
+          options: ["Sim, diariamente", "Algumas vezes por semana", "Apenas quando houver novidades"],
+          cover: "https://www.playflixpro.online/covers/desenho/q05.webp",
+          fallbackCover: "https://pictures.hentai-foundry.com/s/Sfan/556474/Sfan-556474-Amimation_Daphne_ans_Scooby.gif"
+        },
+        // Questions 6-10 occur after the video
+        {
+          id: 6,
+          title: "Depois de assistir, qual opção combina mais com você?",
+          options: ["Quero acesso imediato", "Quero conhecer melhor", "Quero ver o que está incluído"],
+          cover: "https://www.playflixpro.online/covers/desenho/q06.webp",
+          fallbackCover: "https://m8.hentaiera.com/024/wh04onq1fb/10.gif"
+        },
+        {
+          id: 7,
+          title: "Qual tipo de acesso você prefere?",
+          options: ["Acesso único", "Acesso vitalício", "Acesso com atualizações"],
+          cover: "https://www.playflixpro.online/covers/desenho/q07.webp",
+          fallbackCover: "https://api-cdn.rule34.xxx/images/521/ba115d7e1b7ee4acc94d4b3a191f0ec8.gif"
+        },
+        {
+          id: 8,
+          title: "O que mais pesaria na sua decisão?",
+          options: ["Preço baixo", "Qualidade do conteúdo", "Organização", "Atualizações frequentes"],
+          cover: "https://www.playflixpro.online/covers/desenho/q08.webp",
+          fallbackCover: "https://r34i.paheal-cdn.net/fd/90/fd90ca6479dd979452720ceab7fe525c"
+        },
+        {
+          id: 9,
+          title: "Você gostaria de acessar tudo hoje?",
+          options: ["Sim, agora", "Talvez ainda hoje", "Quero ver a oferta primeiro"],
+          cover: "https://www.playflixpro.online/covers/desenho/q09.webp",
+          fallbackCover: "https://wimg.rule34.xxx/images/5878/69d7931c5df53141013370c87a90a890.gif?7063891"
+        },
+        {
+          id: 10,
+          title: "Se o acesso estiver disponível por um valor promocional, você gostaria de garantir agora?",
+          options: ["Sim", "Talvez", "Quero analisar"],
+          cover: "https://www.playflixpro.online/covers/desenho/q10.webp",
+          fallbackCover: "https://cartoon.hentaox.com/wp-content/uploads/2021/04/leela-pagando-boquete-zapp-brannigan-futurama-hentai.gif"
+        }
+      ],
+      loadingSteps: [
+        "Confirmando compatibilidade",
+        "Verificando preferência de acesso",
+        "Preparando recomendação final",
+        "Liberando condição especial",
+        "Finalizando"
+      ],
+      benefits: [
+        "Mais de 20.000 conteúdos organizados",
+        "Qualidade Full HD e 4K",
+        "Atualizações frequentes",
+        "Acesso imediato",
+        "Acesso vitalício",
+        "Ambiente discreto e organizado"
+      ]
+    };
+
+    // Definição dos passos do funil
+    const STEPS = [
+      { type: "question", questionId: 1 },
+      { type: "question", questionId: 2 },
+      { type: "question", questionId: 3 },
+      { type: "question", questionId: 4 },
+      { type: "question", questionId: 5 },
+      { type: "pre_video" },
+      { type: "video" },
+      { type: "question", questionId: 6 },
+      { type: "question", questionId: 7 },
+      { type: "question", questionId: 8 },
+      { type: "question", questionId: 9 },
+      { type: "question", questionId: 10 },
+      { type: "loading" },
+      { type: "result" }
+    ];
+
+    let currentStepIndex = 0;
+    let answers = {};
+    let videoWatched = false;
+
+    const container = document.getElementById("funnel-container");
+    const progressBarFill = document.getElementById("progress-bar-fill");
+    const progressText = document.getElementById("progress-text");
+
+    // Tentar carregar sessão anterior se existir
+    const STORAGE_KEY = `quizhental_desenho_session`;
+    try {
+      const saved = sessionStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.stepIndex < STEPS.length - 2) {
+          currentStepIndex = parsed.stepIndex;
+          answers = parsed.answers || {};
+          videoWatched = parsed.videoWatched || false;
+        }
+      }
+    } catch (e) {
+      console.error("Erro ao carregar sessão", e);
+    }
+
+    function saveSession() {
+      try {
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+          stepIndex: currentStepIndex,
+          answers: answers,
+          videoWatched: videoWatched
+        }));
+      } catch (e) {
+        console.error("Erro ao salvar sessão", e);
+      }
+    }
+
+    function updateProgress() {
+      let progress = 0;
+      if (currentStepIndex >= 12) {
+        progress = 100;
+      } else {
+        progress = Math.round((currentStepIndex / 12) * 100);
+      }
+      progressBarFill.style.width = `${progress}%`;
+      progressText.textContent = `${progress}%`;
+    }
+
+    function renderStep() {
+      saveSession();
+      updateProgress();
+      
+      const step = STEPS[currentStepIndex];
+      container.className = "w-full animate-fade-in";
+      
+      if (step.type === "question") {
+        const question = CONFIG.questions.find(q => q.id === step.questionId);
+        renderQuestion(question);
+      } else if (step.type === "pre_video") {
+        renderPreVideo();
+      } else if (step.type === "video") {
+        renderVideoScreen();
+      } else if (step.type === "loading") {
+        renderLoadingScreen();
+      } else if (step.type === "result") {
+        renderResultScreen();
+      }
+      
+      window.scrollTo(0, 0);
+    }
+
+    function preloadNextImages() {
+      const nextStep = STEPS[currentStepIndex + 1];
+      if (nextStep && nextStep.type === "question") {
+        const nextQ = CONFIG.questions.find(q => q.id === nextStep.questionId);
+        if (nextQ) {
+          const img = new Image();
+          img.src = `covers/desenho/q${String(nextQ.id).padStart(2, "0")}.webp`;
+          const imgFallback = new Image();
+          imgFallback.src = nextQ.cover;
+        }
+      }
+    }
+
+    function renderQuestion(q) {
+      const qIndex = CONFIG.questions.findIndex(item => item.id === q.id) + 1;
+      const totalQ = CONFIG.questions.length;
+      
+      const localImg = `covers/desenho/q${String(q.id).padStart(2, "0")}.webp`;
+      
+      let optionsHTML = "";
+      q.options.forEach((opt, idx) => {
+        const letter = String.fromCharCode(65 + idx);
+        optionsHTML += `
+          <button type="button" onclick="selectAnswer('${opt}')" class="group relative min-h-[52px] w-full touch-manipulation overflow-hidden rounded-xl border border-red-900/40 bg-white/5 px-4 py-3.5 text-left text-[15px] font-medium leading-snug text-white transition-[transform,opacity,border-color,background-color] duration-200 active:scale-[0.98] active:border-neon-red/50 active:bg-red-950/40 sm:min-h-[56px] sm:rounded-2xl sm:px-5 sm:py-4 sm:text-base animate-fade-in" style="animation-delay: ${idx * 0.05}s">
+            <span class="relative flex items-center gap-3">
+              <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-red-800/50 bg-red-950/50 text-sm font-bold text-neon-red sm:h-8 sm:w-8">${letter}</span>
+              <span class="flex-1">${opt}</span>
+            </span>
+          </button>
+        `;
+      });
+
+      container.innerHTML = `
+        <div class="relative mb-3 aspect-video max-h-[140px] w-full overflow-hidden rounded-2xl border border-red-900/30 shadow-card xs:max-h-[150px] sm:mb-4 sm:max-h-[170px] md:max-h-[180px]">
+          <div id="media-loader" class="absolute inset-0 flex items-center justify-center bg-red-950/40 z-10">
+            <div class="h-7 w-7 animate-spin rounded-full border-2 border-neon-red/20 border-t-neon-red/70"></div>
+          </div>
+          <img id="question-media" src="${localImg}" onerror="handleImageError(this, '${q.cover}', '${q.fallbackCover}')" onload="document.getElementById('media-loader').classList.add('hidden')" alt="" class="absolute inset-0 h-full w-full object-cover object-center" />
+          <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+        </div>
+
+        <div class="rounded-2xl border border-red-900/30 bg-gradient-to-b from-red-950/20 to-black/60 p-4 shadow-card sm:rounded-3xl sm:p-6 md:p-8">
+          <p class="mb-1.5 text-[11px] font-semibold uppercase tracking-widest text-neon-red sm:mb-2 sm:text-sm">Pergunta ${q.id} de ${totalQ}</p>
+          <h2 class="mb-5 text-lg font-bold leading-snug text-white sm:mb-6 sm:text-xl md:mb-8 md:text-2xl">${q.title}</h2>
+          <div class="flex flex-col gap-2.5 sm:gap-3">
+            ${optionsHTML}
+          </div>
+        </div>
+      `;
+      
+      preloadNextImages();
+    }
+
+    function handleImageError(imgEl, competitorUrl, fallbackUrl) {
+      if (imgEl.src !== competitorUrl && competitorUrl) {
+        imgEl.src = competitorUrl;
+      } else if (imgEl.src !== fallbackUrl && fallbackUrl) {
+        imgEl.src = fallbackUrl;
+      } else {
+        document.getElementById('media-loader').classList.add('hidden');
+        imgEl.style.display = 'none';
+        const parent = imgEl.parentElement;
+        const msg = document.createElement('div');
+        msg.className = "flex h-full w-full items-center justify-center bg-red-950/30 text-xs text-white/50";
+        msg.innerHTML = "Mídia indisponível";
+        parent.appendChild(msg);
+      }
+    }
+
+    window.selectAnswer = function(answerText) {
+      const step = STEPS[currentStepIndex];
+      answers[step.questionId] = answerText;
+      
+      fbq('trackCustom', `Answer_Q${step.questionId}`, { answer: answerText });
+      
+      currentStepIndex++;
+      renderStep();
+    };
+
+    function renderPreVideo() {
+      container.innerHTML = `
+        <div class="rounded-2xl border border-red-900/40 bg-gradient-to-b from-red-950/30 via-black/70 to-black p-5 shadow-neon-mobile sm:rounded-3xl sm:p-8 sm:shadow-neon">
+          <p class="mb-4 text-center text-xl font-extrabold text-gradient-red sm:text-2xl">🎯 Antes de continuar...</p>
+          <div class="mb-6 space-y-3 text-center sm:mb-8 sm:space-y-4">
+            <p class="text-[15px] leading-relaxed text-white/90 sm:text-base">Com base nas suas respostas, encontramos uma recomendação compatível com o seu perfil.</p>
+            <p class="text-sm leading-relaxed text-white/60 sm:text-base">Assista ao vídeo rápido abaixo para entender como funciona e depois continue respondendo o quiz para liberar o acesso recomendado.</p>
+          </div>
+          <button type="button" onclick="continueFunnel()" class="btn-cta w-full min-h-[52px] touch-manipulation rounded-xl px-5 py-4 text-sm font-extrabold uppercase tracking-wide text-white shadow-neon-mobile transition-transform active:scale-[0.98] sm:min-h-[56px] sm:rounded-2xl sm:py-5 sm:text-base sm:shadow-neon-lg md:hover:scale-[1.01]">
+            ASSISTIR AGORA
+          </button>
+        </div>
+      `;
+    }
+
+    window.continueFunnel = function() {
+      currentStepIndex++;
+      renderStep();
+    };
+
+    function renderVideoScreen() {
+      fbq('track', 'Lead');
+      
+      const srcUrl = `https://scripts.converteai.net/41b085ac-d999-4a11-a0d5-ff849e26383e/players/6a39df41373e80a1b4f9ebda/v4/embed.html?vl=${encodeURIComponent(window.location.href)}`;
+      
+      container.innerHTML = `
+        <div class="rounded-2xl border border-red-900/40 bg-gradient-to-b from-red-950/30 via-black/80 to-black p-4 shadow-neon-mobile sm:rounded-3xl sm:p-6 sm:shadow-neon-lg md:p-8">
+          <h2 class="mb-2 text-center text-lg font-extrabold text-gradient-red sm:text-xl md:text-2xl">🔥 Sua recomendação personalizada</h2>
+          <p class="mb-4 text-center text-sm leading-relaxed text-white/70 sm:mb-6 sm:text-base">Assista até o final e continue o quiz para liberar seu resultado.</p>
+          
+          <div class="mb-4 overflow-hidden rounded-xl border border-red-900/30 bg-black p-1.5 sm:mb-6 sm:rounded-2xl sm:p-2">
+            <div id="ifr_wrapper" class="relative w-full overflow-hidden rounded-xl bg-red-950/20" style="padding-top: 178.22%;">
+              <div id="player-loader" class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-black/50">
+                <div class="h-10 w-10 animate-spin rounded-full border-2 border-neon-red/30 border-t-neon-red"></div>
+                <p class="text-xs text-white/50">Preparando vídeo...</p>
+              </div>
+              <iframe id="video-iframe" src="${srcUrl}" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" referrerpolicy="origin" class="absolute left-0 top-0 h-full w-full" onload="document.getElementById('player-loader').classList.add('hidden')"></iframe>
+            </div>
+          </div>
+          
+          <div id="video-cta-container" class="hidden">
+            <button type="button" onclick="continueFunnel()" class="btn-cta w-full min-h-[52px] touch-manipulation rounded-xl px-5 py-4 text-sm font-extrabold uppercase tracking-wide text-white shadow-neon-mobile transition-transform active:scale-[0.98] sm:min-h-[56px] sm:rounded-2xl sm:py-5 sm:text-base sm:shadow-neon-lg md:hover:scale-[1.01]">
+              CONTINUAR QUIZ
+            </button>
+          </div>
+          <p id="video-tip" class="mt-3 text-center text-xs text-white/40 sm:mt-4">Assista ao vídeo até o final para continuar...</p>
+        </div>
+      `;
+
+      setTimeout(() => {
+        showVideoCTA();
+      }, 15000); // Fail-safe 15 segundos
+
+      window.addEventListener("message", handleSmartplayerMessage);
+    }
+
+    function handleSmartplayerMessage(e) {
+      if (e.origin.includes("converteai.net")) {
+        const dataStr = typeof e.data === 'string' ? e.data.toLowerCase() : JSON.stringify(e.data).toLowerCase();
+        if (dataStr.includes("ended") || dataStr.includes("video_end") || dataStr.includes("playback_end") || dataStr.includes('"percent":100')) {
+          showVideoCTA();
+        }
+      }
+    }
+
+    function showVideoCTA() {
+      const cta = document.getElementById("video-cta-container");
+      const tip = document.getElementById("video-tip");
+      if (cta) {
+        cta.classList.remove("hidden");
+        cta.classList.add("animate-slide-in");
+      }
+      if (tip) {
+        tip.style.display = "none";
+      }
+      videoWatched = true;
+      saveSession();
+      fbq('trackCustom', 'VideoWatched');
+    }
+
+    function renderLoadingScreen() {
+      fbq('track', 'CompleteRegistration');
+
+      container.innerHTML = `
+        <div class="rounded-2xl border border-red-900/30 bg-gradient-to-b from-red-950/30 to-black/70 p-5 shadow-card sm:rounded-3xl sm:p-8">
+          <div class="mb-5 flex justify-center sm:mb-6">
+            <div class="h-14 w-14 animate-spin rounded-full border-2 border-neon-red/30 border-t-neon-red"></div>
+          </div>
+          <h2 class="mb-5 text-center text-lg font-bold text-white sm:mb-6 sm:text-xl">Analisando suas respostas finais...</h2>
+          <div class="mb-4 h-1.5 overflow-hidden rounded-full bg-white/10 sm:mb-6">
+            <div id="loading-bar" class="h-full rounded-full bg-gradient-to-r from-red-900 via-neon-red to-neon-glow shadow-neon-mobile transition-[width] duration-100" style="width: 0%;"></div>
+          </div>
+          <p id="loading-pct" class="mb-5 text-center text-sm font-medium text-neon-red sm:mb-6">0%</p>
+          <ul id="loading-steps-list" class="space-y-2.5 sm:space-y-3">
+            <!-- Steps checkmarks -->
+          </ul>
+        </div>
+      `;
+
+      const stepsList = document.getElementById("loading-steps-list");
+      CONFIG.loadingSteps.forEach((step, idx) => {
+        const li = document.createElement("li");
+        li.id = `loading-step-${idx}`;
+        li.className = "flex items-center gap-3 text-sm transition-opacity duration-300 sm:text-base opacity-40";
+        li.innerHTML = `
+          <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold bg-white/5 text-white/30">•</span>
+          <span class="text-white/40">${step}</span>
+        `;
+        stepsList.appendChild(li);
+      });
+
+      const duration = 4000;
+      const start = Date.now();
+      const interval = setInterval(() => {
+        const elapsed = Date.now() - start;
+        const pct = Math.min((elapsed / duration) * 100, 100);
+        
+        document.getElementById("loading-bar").style.width = `${pct}%`;
+        document.getElementById("loading-pct").textContent = `${Math.round(pct)}%`;
+        
+        const currentActiveStep = Math.min(Math.floor((elapsed / duration) * CONFIG.loadingSteps.length), CONFIG.loadingSteps.length - 1);
+        for (let i = 0; i <= currentActiveStep; i++) {
+          const stepLi = document.getElementById(`loading-step-${i}`);
+          if (stepLi && !stepLi.classList.contains("opacity-100")) {
+            stepLi.classList.remove("opacity-40");
+            stepLi.classList.add("opacity-100");
+            stepLi.innerHTML = `
+              <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold bg-neon-red/20 text-neon-red shadow-neon-mobile">✔</span>
+              <span class="text-white">${CONFIG.loadingSteps[i]}</span>
+            `;
+          }
+        }
+        
+        if (elapsed >= duration) {
+          clearInterval(interval);
+          setTimeout(() => {
+            currentStepIndex++;
+            renderStep();
+          }, 300);
+        }
+      }, 50);
+    }
+
+    function renderResultScreen() {
+      try {
+        sessionStorage.removeItem(STORAGE_KEY);
+      } catch (e) {}
+
+      container.innerHTML = `
+        <div class="relative overflow-hidden rounded-2xl border border-red-800/40 bg-gradient-to-b from-red-950/40 via-black/80 to-black p-5 shadow-neon-mobile sm:rounded-3xl sm:p-8 sm:shadow-neon-lg">
+          <div class="pointer-events-none absolute -right-20 -top-20 hidden h-60 w-60 rounded-full bg-red-600/10 blur-[60px] md:block"></div>
+          <div class="mb-2 text-center text-3xl sm:text-4xl">🎉</div>
+          <h2 class="mb-3 text-center text-xl font-extrabold text-gradient-red sm:text-2xl md:text-3xl">🎉 Acesso recomendado encontrado</h2>
+          <p class="mb-5 text-center text-sm leading-relaxed text-white/70 sm:text-base">Com base nas suas respostas e no vídeo assistido, encontramos a melhor opção para o seu perfil.</p>
+          
+          <div class="mb-5 rounded-xl border border-red-900/40 bg-red-950/20 p-4 sm:mb-6 sm:rounded-2xl sm:p-5">
+            <div class="mb-4">
+              <div class="mb-2 flex items-center justify-between text-sm">
+                <span class="text-white/70">📊 Compatibilidade</span>
+                <span id="compatibility-pct" class="font-bold text-neon-red">0%</span>
+              </div>
+              <div class="h-2 overflow-hidden rounded-full bg-white/10">
+                <div id="compatibility-bar" class="h-full rounded-full bg-gradient-to-r from-red-900 via-neon-red to-neon-glow transition-[width] duration-300" style="width: 0%;"></div>
+              </div>
+            </div>
+            <div class="rounded-lg border border-red-900/30 bg-black/40 px-3 py-2.5 sm:rounded-xl sm:px-4 sm:py-3">
+              <p class="text-[10px] uppercase tracking-widest text-white/50 sm:text-xs">🔥 Recomendação</p>
+              <p class="mt-1 text-base font-bold text-white sm:text-lg">Acesso vitalício com atualização frequente</p>
+            </div>
+          </div>
+
+          <ul class="mb-5 space-y-2 sm:mb-6 sm:space-y-2.5">
+            <!-- Benefits items -->
+          </ul>
+
+          <div class="mb-5 rounded-xl border border-yellow-500/20 bg-yellow-500/5 px-3 py-2.5 text-center sm:mb-6 sm:rounded-2xl sm:px-4 sm:py-3">
+            <p class="text-xs text-yellow-400/90 sm:text-sm">⭐ Mais de <strong class="text-yellow-300">1.072 usuários</strong> já garantiram acesso.</p>
+          </div>
+
+          <div class="mb-5 text-center sm:mb-6">
+            <p class="text-sm text-white/50 line-through">De ${CONFIG.resultPriceOriginal}</p>
+            <p class="text-sm text-white/70">Por apenas:</p>
+            <p class="text-3xl font-black text-neon-red sm:text-4xl md:text-5xl">${CONFIG.resultPrice}</p>
+          </div>
+
+          <button type="button" onclick="checkoutRedirect()" class="btn-cta w-full min-h-[52px] touch-manipulation rounded-xl px-5 py-4 text-sm font-extrabold uppercase tracking-wide text-white shadow-neon-mobile transition-transform active:scale-[0.98] sm:min-h-[56px] sm:rounded-2xl sm:py-5 sm:text-base sm:shadow-neon-lg md:hover:scale-[1.01] animate-pulse-neon max-md:animate-none">
+            GARANTIR MEU ACESSO AGORA
+          </button>
+        </div>
+      `;
+
+      const ul = container.querySelector("ul");
+      CONFIG.benefits.forEach(benefit => {
+        const li = document.createElement("li");
+        li.className = "flex items-start gap-2.5 text-sm text-white/90 sm:text-base";
+        li.innerHTML = `<span class="mt-0.5 shrink-0 text-neon-red">✅</span> <span>${benefit}</span>`;
+        ul.appendChild(li);
+      });
+
+      const targetScore = CONFIG.compatibilityScore;
+      const duration = 1200;
+      const start = Date.now();
+      const interval = setInterval(() => {
+        const elapsed = Date.now() - start;
+        const score = Math.min(Math.round((elapsed / duration) * targetScore), targetScore);
+        
+        document.getElementById("compatibility-pct").textContent = `${score}%`;
+        document.getElementById("compatibility-bar").style.width = `${score}%`;
+        
+        if (elapsed >= duration) {
+          clearInterval(interval);
+        }
+      }, 40);
+    }
+
+    window.checkoutRedirect = function() {
+      fbq('track', 'InitiateCheckout');
+      
+      if (CONFIG.checkoutUrl && CONFIG.checkoutUrl !== "#") {
+        window.open(CONFIG.checkoutUrl, "_blank");
+      }
+    };
+
+    renderStep();
+  </script>
+</body>
+</html>
