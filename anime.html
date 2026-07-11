@@ -39,6 +39,29 @@
 </head>
 <body class="bg-premium min-h-[100dvh] overflow-x-hidden text-white">
 
+  <!-- Modal de Verificação de Idade (Age Gate) -->
+  <div id="age-gate" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 px-4 backdrop-blur-md">
+    <div class="w-full max-w-md rounded-2xl border border-red-900/40 bg-gradient-to-b from-red-950/40 via-black/90 to-black p-6 text-center shadow-neon sm:p-8 animate-fade-in">
+      <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-950/50 border border-neon-red/30 text-neon-red text-3xl font-bold shadow-neon-mobile">
+        18+
+      </div>
+      <h2 class="mb-3 text-xl font-extrabold tracking-wide text-white sm:text-2xl">AVISO DE MAIORIDADE</h2>
+      <p class="mb-6 text-sm leading-relaxed text-white/70 sm:text-base">
+        Este site contém material voltado para o público adulto e é destinado exclusivamente a maiores de 18 anos.
+        <br><br>
+        Você confirma que possui <strong>18 anos ou mais</strong>?
+      </p>
+      <div class="flex flex-col gap-3 sm:flex-row sm:gap-4">
+        <button type="button" onclick="confirmAge()" class="btn-cta flex-1 min-h-[50px] rounded-xl text-sm font-extrabold uppercase tracking-wide text-white transition-all active:scale-[0.98] shadow-neon-mobile">
+          Sim, sou maior
+        </button>
+        <button type="button" onclick="rejectAge()" class="flex-1 min-h-[50px] rounded-xl border border-white/10 bg-white/5 text-sm font-bold text-white/60 hover:bg-white/10 hover:text-white transition-all active:scale-[0.98]">
+          Não, sair
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Background decorations (glows) -->
   <div class="pointer-events-none absolute inset-0 overflow-hidden z-0">
     <div class="absolute left-1/2 top-0 h-96 w-96 -translate-x-1/2 rounded-full bg-red-900/20 blur-[100px]"></div>
@@ -604,7 +627,47 @@
     };
 
     // Iniciar a renderização do Funil
-    renderStep();
+    function checkAgeGate() {
+      if (sessionStorage.getItem("age_verified") === "true") {
+        const ageGate = document.getElementById("age-gate");
+        if (ageGate) {
+          ageGate.remove();
+        }
+        renderStep();
+      } else {
+        const container = document.getElementById("funnel-container");
+        if (container) {
+          container.style.display = "none";
+        }
+        const progressBar = document.getElementById("progress-bar-container");
+        if (progressBar) {
+          progressBar.style.display = "none";
+        }
+      }
+    }
+
+    window.confirmAge = function() {
+      sessionStorage.setItem("age_verified", "true");
+      const ageGate = document.getElementById("age-gate");
+      if (ageGate) {
+        ageGate.remove();
+      }
+      const container = document.getElementById("funnel-container");
+      if (container) {
+        container.style.display = "";
+      }
+      const progressBar = document.getElementById("progress-bar-container");
+      if (progressBar) {
+        progressBar.style.display = "";
+      }
+      renderStep();
+    };
+
+    window.rejectAge = function() {
+      window.location.href = "https://www.google.com";
+    };
+
+    checkAgeGate();
   </script>
 </body>
 </html>
